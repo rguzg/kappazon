@@ -1,6 +1,7 @@
 import './App.css';
 import Header from './Components/Header';
 import Login_CreateAccount from './Components/Login_CreateAccount';
+import Products from './Components/Products';
 import { UserContext, User } from './context';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
@@ -20,12 +21,12 @@ function App() {
           },
           isLoggedIn: isLoggedIn,
           login: user.login,
-          accessToken: user.accessToken,
-          refreshToken: user.refreshToken,
+          accessToken: user.accessToken.bind(user),
+          refreshToken: user.refreshToken.bind(user),
         }}
       >
         <Header />
-        {isLoggedIn ? <div>Logged in</div> : <Login_CreateAccount />}
+        {isLoggedIn ? <Products /> : <Login_CreateAccount />}
       </UserContext.Provider>
     </div>
   );

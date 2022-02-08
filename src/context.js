@@ -28,7 +28,7 @@ export class User {
     }
   }
 
-  get accessToken() {
+  accessToken() {
     if (Date.now() < this.#expirationDate) {
       return this.#accessToken;
     } else {
@@ -92,11 +92,11 @@ export class User {
     this.isLoggedIn = true;
 
     localStorage.setItem('accessToken', this.#accessToken);
-    localStorage.setItem('refreshToken', this.#accessToken);
+    localStorage.setItem('refreshToken', this.#refreshToken);
   }
 
   async refreshToken() {
-    const response = await fetch(`http://localhost:8000/api/refresh`, {
+    const response = await fetch(`http://localhost:8000/api/token/refresh`, {
       method: 'POST',
       body: JSON.stringify({
         refresh: this.#refreshToken,
