@@ -2,11 +2,11 @@ import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../context';
 import { Card, Button } from 'react-bootstrap';
 
-export default function Products({ product }) {
+export default function CartProduct({ cartItem }) {
   const { accessToken, refreshToken } = useContext(UserContext);
   const [currentAmount, setCurrentAmount] = useState(1);
 
-  async function addToCart() {
+  async function updateCart() {
     if (!accessToken()) {
       await refreshToken();
     }
@@ -18,13 +18,13 @@ export default function Products({ product }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        product: product.id.replaceAll('-', ''),
+        product: cartItem.product.id.replaceAll('-', ''),
         quantity: currentAmount,
       }),
     });
 
     if (response.status === 200) {
-      alert('Product added to cart');
+      alert('Product modified');
     } else {
       let json = await response.json();
 
@@ -34,25 +34,29 @@ export default function Products({ product }) {
 
   return (
     <Card style={{ width: '18rem', margin: '8px' }}>
-      <Card.Img alt={product.name} variant="top" src={product.image_url} />
+      <Card.Img
+        alt={cartItem.product.name}
+        variant="top"
+        src={cartItem.product.image_url}
+      />
       <Card.Body>
-        <Card.Title>{product.name}</Card.Title>
-        <Card.Text>{product.description}</Card.Text>
-        <small>Currently available: {product.inventory}</small>
+        <Card.Title>{cartItem.product.name}</Card.Title>
+        <Card.Text>{cartItem.product.description}</Card.Text>
+        <small>In cart: {cartItem.quantity}</small>
         <div className="mt-4" style={{ display: 'flex' }}>
-          <Button variant="success" onClick={addToCart}>
-            Add to cart
-          </Button>
           <input
             type="number"
-            min={1}
-            max={product.inventory}
+            min={0}
+            max={cartItem.product.inventory}
             className="form-control"
-            style={{ width: '50px', 'margin-left': '20px' }}
+            style={{ width: '50px', 'margin-right': '20px' }}
             onChange={(event) => {
               setCurrentAmount(event.target.value);
             }}
           ></input>
+          <Button variant="success" onClick={updateCart}>
+            Update
+          </Button>
         </div>
       </Card.Body>
     </Card>

@@ -1,7 +1,7 @@
 import './App.css';
 import Header from './Components/Header';
 import Login_CreateAccount from './Components/Login_CreateAccount';
-import Products from './Components/Products';
+import Router from './Components/Router';
 import { UserContext, User } from './context';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
@@ -26,7 +26,7 @@ function App() {
         }}
       >
         <Header />
-        {isLoggedIn ? <Products /> : <Login_CreateAccount />}
+        {isLoggedIn ? <Router /> : <Login_CreateAccount />}
       </UserContext.Provider>
     </div>
   );
